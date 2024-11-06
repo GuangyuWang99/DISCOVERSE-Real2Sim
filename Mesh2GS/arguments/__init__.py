@@ -94,7 +94,7 @@ class OptimizationParams(ParamGroup):
         self.densify_until_iter = 15_000    # 15_000
         self.densify_grad_threshold = 0.0002
         self.scale_loss_weight = 100.0
-        self.depth_loss_weight = 0.0    # 5.0
+        self.depth_loss_weight = 5.0    # 5.0
         self.normal_loss_weight = 0.0   # 1.0
         
         self.wo_image_weight = False

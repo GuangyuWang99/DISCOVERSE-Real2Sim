@@ -17,7 +17,7 @@ import os
 ## objaverse
 scene=1
 data_base_path='/data/guangyu/aRobotics/data/objaverse/{}'.format(scene)
-out_base_path='/data/guangyu/aGaussian/record/objaverse/{}/mesh2gs_nod'.format(scene)
+out_base_path='/data/guangyu/aGaussian/record/objaverse/{}/mesh2gs'.format(scene)
 gpu_id=2
 # ----------------------------------------------------------------------------------
 
