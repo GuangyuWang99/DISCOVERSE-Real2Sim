@@ -15,7 +15,7 @@ python tocolmap.py
 ```
 Make sure to set the intrinsics (i.e., `--resolution`, `--lens`, `--sensor_size` in `create_argparser()`) **strictly the same** when running `render.py` and `tocolmap.py`.
 
-### Render Customized 3D Assets
+### Render Specified 3D Assets
 In cases where the output 3D model (`1.obj`) should strictly align with the original input model (`.glb` or `.obj` or `.fbx`), run by:
 ```bash
 python bot_render.py
