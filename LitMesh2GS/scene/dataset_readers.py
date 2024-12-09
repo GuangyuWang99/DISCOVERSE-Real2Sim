@@ -171,6 +171,7 @@ def readColmapSceneInfo(path, images, eval, llffhold=8):
         pcd = None
         
     mesh = trimesh.load_mesh(os.path.join(path, '1.obj'))
+    # mesh = trimesh.load_mesh(os.path.join(path, '0.obj'))
     if isinstance(mesh, trimesh.Scene):
         mesh = mesh.to_mesh()
     verts = np.array(mesh.vertices)

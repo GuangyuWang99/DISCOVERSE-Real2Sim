@@ -1,0 +1,27 @@
+## Mesh2GS
+open3d
+pytorch3d
+plyfile
+opencv-python
+lpips
+trimesh
+
+## DiffusionLight
+# utility
+tqdm==4.66.1
+scikit-image==0.21.0
+imageio==2.31.1
+Pillow==10.2.0
+numpy==1.24.1
+natsort==8.4.0
+
+# EXR handling 
+skylibs==0.7.4
+OpenEXR==1.3.9
+
+# Diffusers dependencies
+accelerate==0.21.0
+datasets==2.13.1
+diffusers==0.21.0
+transformers==4.36.0
+xformers==0.0.20

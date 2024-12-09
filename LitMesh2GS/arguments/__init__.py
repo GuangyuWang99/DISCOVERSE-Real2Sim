@@ -82,15 +82,15 @@ class OptimizationParams(ParamGroup):
         self.rotation_lr = 0.001
         self.percent_dense = 0.01
         self.lambda_dssim = 0.2
-        self.densification_interval = 1000
+        self.densification_interval = 1000      # 1000
         self.opacity_reset_interval = 3000
         self.densify_from_iter = 500
         self.densify_until_iter = 15_000        # 15_000
         self.densify_grad_threshold = 0.0002
         
         self.image_loss_weight = 1.0    # 1.0
-        self.depth_loss_weight = 5.0    # 5.0
-        self.mask_loss_weight = 2.0
+        self.depth_loss_weight = 1.0    # 5.0
+        self.mask_loss_weight = 1.0     # 2.0
         
         self.random_background = False
         super().__init__(parser, "Optimization Parameters")

@@ -2,6 +2,7 @@ import os
 import argparse
 import collections
 import math
+import trimesh
 import cv2
 import numpy as np
 import imageio
@@ -127,7 +128,7 @@ def build_colmap_images(view_matrices):
 def create_argparser():
     parser = argparse.ArgumentParser()
     # I/O
-    parser.add_argument("--out_path", type=str, default="/media/womoer/Wdata/aRobotics/Relit/blender_output/1",
+    parser.add_argument("--out_path", type=str, default="/media/womoer/Wdata/aRobotics/Relit/blender_output/airbot_act10/right",
                         help='directory that saves the results')
     # intrinsics
     parser.add_argument("--resolution", type=int, default=512, help="resolution of the rendering")
@@ -141,6 +142,20 @@ if __name__ == "__main__":
     os.makedirs(res_pose_path, exist_ok=True)
 
     cam_path = os.path.join(args.out_path, "poses")
+    depth_path = os.path.join(args.out_path, "depths")
+
+    obj_path = os.path.join(args.out_path, "1.obj")
+    mesh = trimesh.load_mesh(obj_path)
+    if isinstance(mesh, trimesh.Scene):
+        mesh = mesh.to_mesh()
+    print('Successfully loading mesh')
+
+    verts = mesh.vertices
+    faces = mesh.faces
+    bbox_max = np.max(verts, axis=0)
+    bbox_min = np.min(verts, axis=0)
+    scale = (bbox_max - bbox_min).max()
+    center = (bbox_max + bbox_min) / 2
 
     focal_mm = args.lens
     height = args.resolution
@@ -155,23 +170,26 @@ if __name__ == "__main__":
 
     colmap_cameras = build_colmap_cameras(f=focal, cx=cx, cy=cy, height=height, width=width)
 
-    # projection_matrix = np.array(
-    #     [[2 * focal / width, 0, (width - 2 * cx) / width, 0],
-    #      [0, -2 * focal / height, (height - 2 * cy) / height, 0],
-    #      [0, 0, -(zf + zn) / (zf - zn), -(2 * zf * zn) / (zf - zn)],
-    #      [0, 0, -1, 0]], dtype=np.float32
-    # )
-
     cam_items = sorted(os.listdir(cam_path))
     colmap_view_mats = []
     mv_template = np.eye(4)
 
     for i, cam_name in tqdm(enumerate(cam_items)):
-        # bdpt = cv2.imread(os.path.join(depth_path, img_name.split('.')[0] + '0001.exr'), cv2.IMREAD_UNCHANGED)[..., 0:1]
+        bdpt = cv2.imread(os.path.join(depth_path, cam_name.split('.')[0] + '0001.exr'), cv2.IMREAD_UNCHANGED)
         extr = np.load(os.path.join(cam_path, cam_name))
+
+        R_c2w = extr[:3, :3].transpose(1, 0)
+        t_c2w = -R_c2w @ extr[:3, 3:]
+        t_c2w = t_c2w * scale + center[:, None]
+        t_w2c = -extr[:3, :3] @ t_c2w
+        extr[:3, 3:] = t_w2c
         mv = mv_template.copy()
         mv[:3] = extr
         colmap_view_mats.append(mv)
+
+        bdpt = bdpt * scale
+        os.system('rm -rf ' + os.path.join(depth_path, cam_name.split('.')[0] + '0001.exr'))
+        cv2.imwrite(os.path.join(depth_path, cam_name.split('.')[0] + '0001.exr'), bdpt)
 
     colmap_view_mats = np.stack(colmap_view_mats, axis=0)
 

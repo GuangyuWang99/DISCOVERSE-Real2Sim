@@ -93,8 +93,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
 
         # Loss
         gt_image = viewpoint_cam.original_image.cuda()
-        gt_depth = viewpoint_cam.original_depth.cuda().clip(0.0, 10.0)
+        # gt_depth = viewpoint_cam.original_depth.cuda().clip(0.0, 10.0)
+        gt_depth = viewpoint_cam.original_depth.cuda()
         gt_mask = (viewpoint_cam.original_mask.cuda() > 0.).squeeze()
+        gt_depth[gt_depth > 100.0] = 0.0
         
         _, temp_h, temp_w = gt_image.shape
         crop_h = int(temp_h * opt.undistort_crop_rate)
@@ -111,14 +113,19 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         Ll1 = l1_loss(image[:, gt_mask], gt_image[:, gt_mask])
         image_loss = Ll1
         loss = opt.image_loss_weight * image_loss.clone()
+        # print(loss)
 
         depth_loss = l1_loss(depth[:, gt_mask], gt_depth[:, gt_mask])
         loss += opt.depth_loss_weight * depth_loss
-        
+        # print(loss)
+                
         # mask loss
         mask_loss = torch.nn.functional.binary_cross_entropy(alpha.squeeze(), gt_mask.float())
         loss += opt.mask_loss_weight * mask_loss
         
+        # print(loss)
+        # breakpoint()
+
         if iteration % 200 == 0:
             img_show = ((image).permute(1,2,0).clamp(0,1)[:,:,[2,1,0]]*255).detach().cpu().numpy().astype(np.uint8)
             gt_img_show = ((gt_image).permute(1,2,0).clamp(0,1)[:,:,[2,1,0]]*255).detach().cpu().numpy().astype(np.uint8)
