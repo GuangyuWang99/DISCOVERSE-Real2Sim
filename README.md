@@ -65,7 +65,7 @@ Then, render by:
 ```bash
 python blender_renderer/glb_render.py --root_in_path YourInputPath --root_hdr_path YourHDRPath --root_out_path YourOutputPath
 ```
-The results will be saved at `YourOutputPath`, in which each folder wil contain the RGB images, depth maps, camera parameters, `.obj` geometry for each 3D model. 
+The results will be saved at `YourOutputPath`, in which each folder (namely `hdr_name_i_model_or_part_name_i`) will contain the rendered RGB images, depth maps, camera parameters, `.obj` geometry for each 3D model. 
 
 There are several other parameters to tune if the renderings are not satisfactory.
 - `lit_strength`: strength of the environment lighting, a larger value leads to a brighter rendering.
