@@ -1,4 +1,4 @@
-# Asset Generation Tools for DISCOVERSE: Converting Mesh to 3DGS
+# Mesh2GS Asset Generation for DISCOVERSE
 
 ## Installation
 These tools are tested on Ubuntu 18.04.
@@ -24,7 +24,7 @@ If you can not connect to [huggingface](https://huggingface.co/) due to VPN issu
 
 **Firstly, prepare the input images.** Please resize the input image to **1024x1024**. To achieve this, we recommond cropping the images to contain as much background information as possible. As an alternative, we also recommend padding it with a black border. 
 
-Organize all the processed images into a folder and specify the absolute path as `YourInputPath`. Specify `YourOutputPath` to save your results. Then, run by:
+Organize all the processed images into a folder and specify the absolute path of the folder as `YourInputPath`. Specify `YourOutputPath` as a folder for saving your results. Then, run by:
 ```bash
 python DiffusionLight/inpaint.py --dataset YourInputPath --output_dir YourOutputPath
 python DiffusionLight/ball2envmap.py --ball_dir YourOutputPath/square --envmap_dir YourOutputPath/envmap
