@@ -91,7 +91,7 @@ YourInputPath
 ...
 └── model_or_part_name_n
 ```
-The robot models developed by DISCOVER LAB, including MMK2, AirBot, DJI, RM2, etc., can be accessed through this [link](https://pan.baidu.com/s/1BW0GoDFmd0mPz9QItuJs7A) (Code: 94po)
+The robot models developed by DISCOVER LAB, including MMK2, AirBot, DJI, RM2, etc., can be accessed through this [link](https://pan.baidu.com/s/1BW0GoDFmd0mPz9QItuJs7A) (Code: 94po).
 
 Then, render by:
 ```bash
