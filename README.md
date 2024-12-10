@@ -50,7 +50,7 @@ YourHDRPath
 
 ### Render 3D Mesh Assets
 
-#### For `.glb` Assets
+#### For `.glb` Assets (e.g., Objaverse / Rodin Assets)
 We strongly recommend using `.glb` 3D mesh assets similar to [objaverse](https://github.com/allenai/objaverse-xl). All of the `.glb` 3D assets to be converted should be put together into a single folder like:
 ```
 YourInputPath                          
@@ -73,8 +73,8 @@ There are several other parameters to tune if the renderings are not satisfactor
 - `resolution`: rendering resolution, default value 512x512, a larger resolution leads to much slower rendering time.
 
 
-#### For `.obj` Assets
-If you are dealing with `.obj` assets, e.g., robot models, each model will come with several texture and material maps, and so the data should be organized into individual folders for each model, as the following:
+#### For `.obj` Assets (e.g., Robot Models)
+If you are dealing with `.obj` assets, e.g., robot models, each model will come with several texture and material maps, and the data should be organized into individual folders for each model, as the following:
 ```
 YourInputPath                          
 ├── model_or_part_name_0
@@ -91,6 +91,8 @@ YourInputPath
 ...
 └── model_or_part_name_n
 ```
+The robot models developed by DISCOVER LAB, including MMK2, AirBot, DJI, RM2, etc., can be accessed through this [link](https://pan.baidu.com/s/1BW0GoDFmd0mPz9QItuJs7A) (Code: 94po)
+
 Then, render by:
 ```bash
 python blender_renderer/obj_render.py --root_in_path YourInputPath --root_hdr_path YourHDRPath --root_out_path YourOutputPath
@@ -98,7 +100,7 @@ python blender_renderer/obj_render.py --root_in_path YourInputPath --root_hdr_pa
 The parameter arguments are the same as `blender_renderer/glb_render.py`.
 
 
-### Convert Cameras to COLMAP Convention.
+### Convert Cameras to COLMAP Convention
 Convert the camera parameters from Blender rendering to the colmap formats by:
 ```bash
 python blender_renderer/models2colmap.py --root_path YourOutputPath
@@ -108,6 +110,6 @@ Make sure to set the intrinsics (i.e., `--resolution`, `--lens`, `--sensor_size`
 ## Mesh2GS
 Run Mesh2GS for each 3D asset one-by-one:
 ```bash
-python LitMesh2GS/train.py -s YourOutputPath/model_or_part_name_0 -m YourOutputPath/mesh2gs --data_device cuda --densify_grad_threshold 0.0002 -r 1
+python LitMesh2GS/train.py -s YourOutputPath/model_or_part_name_i -m YourOutputPath/model_or_part_name_i/mesh2gs --data_device cuda --densify_grad_threshold 0.0002 -r 1
 ```
-The 3DGS results will be saved into a new folder `mesh2gs` for each 3D asset.
+The 3DGS results will be saved at a new folder `mesh2gs` in `YourOutputPath/model_or_part_name_i` for each 3D asset.
