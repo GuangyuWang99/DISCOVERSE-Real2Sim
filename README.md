@@ -7,12 +7,13 @@ To setup the Python environment for Mesh2GS & DiffusionLight, run:
 ```bash
 conda create -n mesh2gs python=3.9
 conda activate mesh2gs
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 #replace your cuda version
-pip install -r requirements.txt
-pip install LitMesh2GS/submodules/diff-plane-rasterization
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 # replace your cuda version
+pip install LitMesh2GS/submodules/diff-gaussian-rasterization
 pip install LitMesh2GS/submodules/simple-knn
 ```
-Then, install [Blender](https://www.blender.org/) and [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html). We strongly recommend installing [bpy](https://pypi.org/project/bpy/) in the Python environment. However, if you do have difficulty installing it, you can also run the related scripts in the `Scripting` panel of the Blender executable.
+Please manually install other dependencies described in `requirements.txt`. 
+
+Also, install [Blender](https://www.blender.org/) and [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html). We strongly recommend installing [bpy](https://pypi.org/project/bpy/) in the Python environment. However, if you do have difficulty installing it, you can also run the related scripts in the `Scripting` panel of the Blender executable.
 
 ## DiffusionLight
 *Estimate HDR environment map from a single RGB image.*
