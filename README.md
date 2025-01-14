@@ -23,7 +23,7 @@ Please manually install other dependencies described in `requirements.txt`.
 
 Also, install [Blender](https://www.blender.org/) and [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html). We strongly recommend installing [bpy](https://pypi.org/project/bpy/) in the Python environment. However, if you do have difficulty installing it, you can also run the related scripts in the `Scripting` panel of the Blender executable.
 
-## Image-to-3D Generation
+## Image-to-3D Generation with [TRELLIS](https://github.com/microsoft/TRELLIS)
 *Generate object-level, high-quality textured mesh from a single RGB image.*
 
 [TRELLIS](https://github.com/microsoft/TRELLIS) is the latest, open-source, state-of-the-art 3D generative model that generates high-quality textured meshes, 3DGSs, or radiance fields. We recommond to set up a new environment for TRELLIS and run image-to-3D generation following the [official guidelines](https://github.com/microsoft/TRELLIS). We recommond generating textured meshes as `.glb` files to be compatible with the subsequent lighting estimation, blender relighting, and Mesh2GS steps. **Note that, for a quick setup, you can also directly generate 3DGS (`.ply`) assets for DISCOVERSE skipping the following steps.**
@@ -31,7 +31,7 @@ Also, install [Blender](https://www.blender.org/) and [Blender Python API (bpy)]
 For 3D generation with higher quality, we recommond using commercial software like [Deemos Rodin](https://hyper3d.ai/) ([CLAY](https://arxiv.org/abs/2406.13897)).
 
 ## 3D Scene Reconstruction
-We recommond using [LixelKity K1 scanner](https://www.xgrids.cn/lixelk1) and [Lixel CyberColor](https://www.xgrids.cn/lcc) for generating high-quality 3DGS field. Without access to the scanner, you can use the [vanilla 3DGS](https://github.com/graphdeco-inria/gaussian-splatting) for scene reconstruction.
+We recommond using [LixelKity K1 scanner](https://www.xgrids.cn/lixelk1) and [Lixel CyberColor](https://www.xgrids.cn/lcc) for generating high-quality 3DGS field to serve as the background node. Without access to the scanner, you can use the [vanilla 3DGS](https://github.com/graphdeco-inria/gaussian-splatting) for scene reconstruction.
 
 ## Lighting Estimation with [DiffusionLight](https://github.com/DiffusionLight/DiffusionLight)
 *Estimate HDR environment map from a single RGB image.*
