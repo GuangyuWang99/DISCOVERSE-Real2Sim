@@ -21,7 +21,7 @@ pip install LitMesh2GS/submodules/simple-knn
 ```
 Please manually install other dependencies described in `requirements.txt`. 
 
-Also, install [Blender](https://www.blender.org/) and [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html). We strongly recommend installing [bpy](https://pypi.org/project/bpy/) in the Python environment. However, if you do have difficulty installing it, you can also run the related scripts in the `Scripting` panel of the Blender executable.
+Also, install [Blender](https://www.blender.org/)(recommonded version: 3.4) and [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html). We strongly recommend installing [bpy](https://pypi.org/project/bpy/) in the Python environment. However, if you do have difficulty installing it, you can also run the related scripts in the `Scripting` panel of the Blender executable.
 
 ## Image-to-3D Generation with [TRELLIS](https://github.com/microsoft/TRELLIS)
 *Generate object-level, high-quality textured mesh from a single RGB image.*

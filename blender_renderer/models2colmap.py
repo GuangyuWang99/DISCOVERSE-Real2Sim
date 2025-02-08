@@ -21,7 +21,7 @@ if __name__ == "__main__":
     for model_name in model_name_list:
         model_path = os.path.join(root_path, model_name)
         render_script = [
-            'python', 'bot2colmap.py',
+            'python', 'tocolmap.py',
             '--out_path', model_path,
             '--resolution', str(args.resolution),
             '--lens', str(args.lens),
