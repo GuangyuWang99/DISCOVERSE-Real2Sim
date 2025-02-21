@@ -147,7 +147,8 @@ Note the parameter arguments are the same as `blender_renderer/glb_render.py`.
 ### Convert Cameras to COLMAP Convention
 Convert the camera parameters from Blender rendering to the colmap formats by:
 ```bash
-python blender_renderer/models2colmap.py --root_path YourOutputPath
+cd blender_renderer
+python models2colmap.py --root_path YourOutputPath
 ```
 Make sure to set the intrinsics (i.e., `--resolution`, `--lens`, `--sensor_size`) **strictly the same** when running `obj_render.py` / `glb_render.py` and `models2colmap.py`.
 
@@ -156,7 +157,8 @@ Make sure to set the intrinsics (i.e., `--resolution`, `--lens`, `--sensor_size`
 
 Run Mesh2GS for each 3D asset one-by-one:
 ```bash
-python LitMesh2GS/train.py -s YourOutputPath/model_or_part_name_i -m YourOutputPath/model_or_part_name_i/mesh2gs --data_device cuda --densify_grad_threshold 0.0002 -r 1
+cd LitMesh2GS
+python train.py -s YourOutputPath/model_or_part_name_i -m YourOutputPath/model_or_part_name_i/mesh2gs --data_device cuda --densify_grad_threshold 0.0002 -r 1
 ```
 The 3DGS results will be saved at a new folder `mesh2gs` in `YourOutputPath/model_or_part_name_i` for each 3D asset.
 
