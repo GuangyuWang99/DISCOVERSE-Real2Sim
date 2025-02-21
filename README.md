@@ -11,9 +11,9 @@ models, and physically-based relighting to boost the geometry and appearance fid
 ## Installation
 This repo is tested with Ubuntu 18.04+.
 
-To setup the Python environment for Mesh2GS & DiffusionLight, run:
+**To setup the Python environment for DiffusionLight (Step 3) & Mesh2GS (Step 5)**, run:
 ```bash
-conda create -n mesh2gs python=3.9
+conda create -n mesh2gs python=3.10
 conda activate mesh2gs
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 # replace your cuda version
 pip install LitMesh2GS/submodules/diff-gaussian-rasterization
@@ -21,38 +21,52 @@ pip install LitMesh2GS/submodules/simple-knn
 ```
 Please manually install other dependencies described in `requirements.txt`. 
 
-Also, install [Blender](https://www.blender.org/)(recommonded version: 3.4) and [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html). We strongly recommend installing [bpy](https://pypi.org/project/bpy/) in the Python environment. However, if you do have difficulty installing it, you can also run the related scripts in the `Scripting` panel of the Blender executable.
+**To setup the Python environment for TRELLIS (Step 1)**, we recommend to create a *new*, *separate* environment following the [official guidelines](https://github.com/microsoft/TRELLIS) to avoid any conflicts.
 
-## Image-to-3D Generation with [TRELLIS](https://github.com/microsoft/TRELLIS)
-*Generate object-level, high-quality textured mesh from a single RGB image.*
+**Also, install [Blender](https://www.blender.org/) (recommended version: 3.1.2) for Step 4.** We strongly recommend running the related scripts (`blender_renderer/glb_render.py` and `blender_renderer/obj_render.py`) in the `Scripting` panel of the Blender executable. We do *NOT* recommend using [Blender Python API (bpy)](https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html) due to version mismatch issues.
 
-[TRELLIS](https://github.com/microsoft/TRELLIS) is the latest, open-source, state-of-the-art 3D generative model that generates high-quality textured meshes, 3DGSs, or radiance fields. We recommond to set up a new environment for TRELLIS and run image-to-3D generation following the [official guidelines](https://github.com/microsoft/TRELLIS). We recommond generating textured meshes as `.glb` files to be compatible with the subsequent lighting estimation, blender relighting, and Mesh2GS steps. **Note that, for a quick setup, you can also directly generate 3DGS (`.ply`) assets for DISCOVERSE skipping the following steps.**
+## Step 1: Image-to-3D Generation with [TRELLIS](https://github.com/microsoft/TRELLIS)
+*Generate object-level interactive scene nodes as high-quality textured mesh from a single RGB image.*
 
-For 3D generation with higher quality, we recommond using commercial software like [Deemos Rodin](https://hyper3d.ai/) ([CLAY](https://arxiv.org/abs/2406.13897)).
+**Firstly, capture one RGB image of the target object.** The object should locate at the center of the image and can not be too small (with an coverage larger than 50% pixels). Note that the object is *not* necessarily captured in the exact scene for simulation, we only need to keep the background as *clean* as possible (easy for instance segmentation) and make the environmental lighting white, uniform, and bright.
 
-## 3D Scene Reconstruction
-We recommond using [LixelKity K1 scanner](https://www.xgrids.cn/lixelk1) and [Lixel CyberColor](https://www.xgrids.cn/lcc) for generating high-quality 3DGS field to serve as the background node. Without access to the scanner, you can use the [vanilla 3DGS](https://github.com/graphdeco-inria/gaussian-splatting) for scene reconstruction.
+**Then, run state-of-the-art image-to-3D generation approach to reconstruct textured mesh from the captured RGB image.**
 
-## Lighting Estimation with [DiffusionLight](https://github.com/DiffusionLight/DiffusionLight)
-*Estimate HDR environment map from a single RGB image.*
+- [TRELLIS](https://github.com/microsoft/TRELLIS) is the latest, open-source, state-of-the-art 3D generative model that generates high-quality textured meshes, 3DGSs, or radiance fields. We recommend to set up a new environment for TRELLIS and run image-to-3D generation following the [official guidelines](https://github.com/microsoft/TRELLIS). We recommend generating textured meshes as `.glb` files to be compatible with the subsequent lighting estimation, blender relighting, and Mesh2GS steps. **Note that, for a quick setup, you can also directly generate 3DGS (`.ply`) assets for DISCOVERSE skipping the following steps.**
+
+- For 3D generation with higher quality, we recommend using the commercial software like [Deemos Rodin](https://hyper3d.ai/) ([CLAY](https://arxiv.org/abs/2406.13897)).
+
+## Step 2: 3D Scene Reconstruction
+*Reconstruct the background node as a 3DGS field using scanner or multi-view RGB captures.*
+
+We recommend using [LixelKity K1 scanner](https://www.xgrids.cn/lixelk1) and [Lixel CyberColor](https://www.xgrids.cn/lcc) for generating high-quality 3DGS field to serve as the background node. In cases when the scanner is not available, you can use the [vanilla 3DGS](https://github.com/graphdeco-inria/gaussian-splatting) for scene reconstruction.
+
+## Step 3: Lighting Estimation with [DiffusionLight](https://github.com/DiffusionLight/DiffusionLight)
+*Estimate HDR environment map from a single RGB image, preparing for Step 4, i.e., the alignment between the object appearance and the reconstructed background node.*
+
+**Note:** If you do *not* want to align the appearance of the object with the background, you can just download an arbitrary HDR map in `.exr` format from [PolyHeaven](https://polyhaven.com/hdris), and skip the following process and move to Step 4.
 
 ### Pretrained Weights for Huggingface Model
 If you can not connect to [huggingface](https://huggingface.co/) due to VPN issues, please manually download the pretrained models from this [link](https://pan.baidu.com/s/1hVsfmpQav7DQQY3tdy9q-Q) (Code: 61i2). Then, manually modify the model paths (`SD_MODELS`, `VAE_MODELS`, `CONTROLNET_MODELS`, `DEPTH_ESTIMATOR`) in `DiffusionLight/relighting/argument.py` as the absolute path of your downloaded model folders.
 
 ### How to Run
 
-**Firstly, prepare the input images.** Please resize the input image to **1024x1024**. To achieve this, we recommond cropping the images to contain as much background information as possible. As an alternative, we also recommend padding it with a black border. 
+**Firstly, prepare the input image(s).** Capture one RGB image for each target background and resize the input image(s) to **1024x1024**. To achieve this, we recommend *cropping* the image(s) to contain as much background information as possible. As an alternative, you can also *padding* the image(s) with a black border. 
 
-Organize all the processed images into a folder and specify the absolute path of the folder as `YourInputPath`. Specify `YourOutputPath` as a folder for saving your results. Then, run by:
+Organize all the processed image(s) into a folder and specify the absolute path of the folder as `YourInputPath`. Specify `YourOutputPath` as a folder for saving your results. Then, run by:
 ```bash
-python DiffusionLight/inpaint.py --dataset YourInputPath --output_dir YourOutputPath
-python DiffusionLight/ball2envmap.py --ball_dir YourOutputPath/square --envmap_dir YourOutputPath/envmap
-python DiffusionLight/exposure2hdr.py --input_dir YourOutputPath/envmap --output_dir YourOutputPath/hdr
+cd DiffusionLight
+
+python inpaint.py --dataset YourInputPath --output_dir YourOutputPath
+
+python ball2envmap.py --ball_dir YourOutputPath/square --envmap_dir YourOutputPath/envmap
+
+python exposure2hdr.py --input_dir YourOutputPath/envmap --output_dir YourOutputPath/hdr
 ```
 And the final `.exr` results (saved in `YourOutputPath/hdr/`) will be used for the subsequent Blender PBR.
 
-## Physically-Based Relighting with Blender
-*Render mesh into multi-view images for 3DGS optimization, by uniformly sampling cameras on a sphere and performing (Pre-) physically-based relighting with Blender (bpy) with customized environment HDR map (distant lighting effects).*
+## Step 4: Physically-Based Relighting with Blender
+*Render the mesh of the target object into multi-view images for 3DGS optimization, by uniformly sampling cameras on a sphere and performing (Pre-) physically-based relighting using Blender (bpy) with customized environment HDR map (distant lighting effects).*
 
 Note that this is **NOT** the real PBR functionality, since it simply bakes the lighting to the SH appearance of the 3DGS to mimic the hue of the background scene. 
 
@@ -126,7 +140,7 @@ python blender_renderer/models2colmap.py --root_path YourOutputPath
 ```
 Make sure to set the intrinsics (i.e., `--resolution`, `--lens`, `--sensor_size`) **strictly the same** when running `obj_render.py` / `glb_render.py` and `models2colmap.py`.
 
-## Mesh2GS
+## Step 5: Mesh2GS
 *Convert textured meshes to 3DGSs.*
 
 Run Mesh2GS for each 3D asset one-by-one:
@@ -135,4 +149,4 @@ python LitMesh2GS/train.py -s YourOutputPath/model_or_part_name_i -m YourOutputP
 ```
 The 3DGS results will be saved at a new folder `mesh2gs` in `YourOutputPath/model_or_part_name_i` for each 3D asset.
 
-Since 3DGS is memory-efficient by nature, we recommond to specify `--densification_interval` to roughly control the amounts of the resulting 3DGS points. A larger value will lead to a sparser 3DGS field.
+Since 3DGS is memory-inefficient by nature, we recommend to specify `--densification_interval` to roughly control the amounts of the resulting 3DGS points. A larger value will lead to a sparser 3DGS field consuming less memory.
