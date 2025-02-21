@@ -68,7 +68,7 @@ And the final `.exr` results (saved in `YourOutputPath/hdr/`) will be used for t
 ## Step 4: Physically-Based Relighting with Blender
 *Render the mesh of the target object into multi-view images for 3DGS optimization, by uniformly sampling cameras on a sphere and performing (Pre-) physically-based relighting using Blender (bpy) with customized environment HDR map (distant lighting effects).*
 
-Note that this is **NOT** the real PBR functionality, since it simply bakes the lighting to the SH appearance of the 3DGS to mimic the hue of the background scene. 
+Note that this is *NOT* the real PBR functionality, since it simply bakes the lighting to the SH appearance of the 3DGS to mimic the hue of the background scene. 
 
 ### Prepare `.exr` HDR Maps
 Organize all the hdr maps for (Pre-)PBR into a single folder like:
