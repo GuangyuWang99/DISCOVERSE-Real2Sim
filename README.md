@@ -34,7 +34,7 @@ Please manually install other dependencies described in `requirements.txt`.
 
 - [TRELLIS](https://github.com/microsoft/TRELLIS) is the latest, open-source, state-of-the-art 3D generative model that generates high-quality textured meshes, 3DGSs, or radiance fields. We recommend to set up a new environment for TRELLIS and run image-to-3D generation following the [official guidelines](https://github.com/microsoft/TRELLIS). We recommend generating textured meshes as `.glb` files to be compatible with the subsequent lighting estimation, blender relighting, and Mesh2GS steps. **Note that, for a quick setup, if you do *NOT* want to align the appearance of the object with the background, you can directly generate 3DGS (`.ply`) assets for DISCOVERSE skipping Step3~5.**
 
-- For 3D generation with higher quality, we recommend using the commercial software like [Deemos Rodin](https://hyper3d.ai/) ([CLAY](https://arxiv.org/abs/2406.13897)).
+- For 3D generation with higher quality, we recommend using the commercial software like [Deemos Rodin](https://hyper3d.ai/) ([CLAY](https://arxiv.org/abs/2406.13897)), [Meshy](https://www.meshy.ai/), [TRIPO](https://www.tripo3d.ai/), etc. All of them have free trials.
 
 ## Step 2: 3D Scene Reconstruction
 *Reconstruct the background node as a 3DGS field using scanner or multi-view RGB captures.*
