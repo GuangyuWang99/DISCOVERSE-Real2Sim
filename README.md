@@ -44,7 +44,7 @@ We recommend using [LixelKity K1 scanner](https://www.xgrids.cn/lixelk1) and [Li
 ## Step 3: Lighting Estimation with [DiffusionLight](https://github.com/DiffusionLight/DiffusionLight)
 *Estimate HDR environment map from a single RGB image, preparing for Step 4, i.e., the alignment between the object appearance and the reconstructed background node.*
 
-**Note:** If you do *not* want to align the appearance of the object with the background, you can just download an arbitrary HDR map in `.exr` format from [PolyHeaven](https://polyhaven.com/hdris), and skip the following process and move to Step 4.
+**Note:** If you do *NOT* want to align the appearance of the object with the background, you can just download an arbitrary HDR map in `.exr` format from [PolyHeaven](https://polyhaven.com/hdris), and skip the following process and move to Step 4.
 
 ### Pretrained Weights for Huggingface Model
 If you can not connect to [huggingface](https://huggingface.co/) due to VPN issues, please manually download the pretrained models from this [link](https://pan.baidu.com/s/1hVsfmpQav7DQQY3tdy9q-Q) (Code: 61i2). Then, manually modify the model paths (`SD_MODELS`, `VAE_MODELS`, `CONTROLNET_MODELS`, `DEPTH_ESTIMATOR`) in `DiffusionLight/relighting/argument.py` as the absolute path of your downloaded model folders.
@@ -94,10 +94,15 @@ YourInputPath
 └── model_or_part_name_n.glb
 ```
 
-Then, render by:
+Then, paste and run `blender_renderer/glb_render.py` **in the `Scripting` panel of the Blender executable** and pass into the following arguments as:
 ```bash
-python blender_renderer/glb_render.py --root_in_path YourInputPath --root_hdr_path YourHDRPath --root_out_path YourOutputPath
+--root_in_path YourInputPath 
+--root_hdr_path YourHDRPath 
+--root_out_path YourOutputPath
 ```
+<!-- ```bash
+python blender_renderer/glb_render.py --root_in_path YourInputPath --root_hdr_path YourHDRPath --root_out_path YourOutputPath
+``` -->
 The results will be saved at `YourOutputPath`, in which each folder (namely {hdr_name_i}_{model_or_part_name_i}) will store the rendered RGB images, depth maps, camera parameters, `.obj` geometry for one of the 3D models under one of the lightings. 
 
 There are several other parameters to tune if the renderings are not satisfactory.
@@ -126,11 +131,17 @@ YourInputPath
 ```
 The robot models developed by DISCOVER LAB, including MMK2, AirBot, DJI, RM2, etc., can be accessed through this [link](https://pan.baidu.com/s/1BW0GoDFmd0mPz9QItuJs7A) (Code: 94po).
 
-Then, render by:
+Then, paste and run `blender_renderer/obj_render.py` **in the `Scripting` panel of the Blender executable** and pass into the following arguments as:
+```bash
+--root_in_path YourInputPath 
+--root_hdr_path YourHDRPath 
+--root_out_path YourOutputPath
+```
+<!-- Then, render by:
 ```bash
 python blender_renderer/obj_render.py --root_in_path YourInputPath --root_hdr_path YourHDRPath --root_out_path YourOutputPath
-```
-The parameter arguments are the same as `blender_renderer/glb_render.py`.
+``` -->
+Note the parameter arguments are the same as `blender_renderer/glb_render.py`.
 
 
 ### Convert Cameras to COLMAP Convention
