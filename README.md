@@ -28,7 +28,7 @@ Please manually install other dependencies described in `requirements.txt`.
 ## Step 1: Image-to-3D Generation with [TRELLIS](https://github.com/microsoft/TRELLIS)
 *Generate object-level interactive scene nodes as high-quality textured mesh from a single RGB image.*
 
-**Firstly, capture one RGB image of the target object.** The object should locate at the center of the image and can not be too small (with an coverage larger than 50% pixels). Note that the object is *not* necessarily captured in the exact scene for simulation, we only need to keep the background as *clean* as possible (easy for instance segmentation) and make the environmental lighting white, uniform, and bright.
+**Firstly, capture one RGB image of the target object.** The object should locate at the center of the image and can not be too small (with an coverage larger than 50% pixels). Note that the object should *not* be necessarily captured in the exact scene for simulation, we only need to keep the background as *clean* as possible (easy for instance segmentation) and make the environmental lighting white, uniform, and bright.
 
 **Then, run state-of-the-art image-to-3D generation approach to reconstruct textured mesh from the captured RGB image.**
 
